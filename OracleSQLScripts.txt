@@ -1,0 +1,40 @@
+create table customers(
+cid varchar2(10) primary key,
+cname varchar(15) not null,
+contact varchar2(10) not null check (contact > 0 AND length(contact) = 10)
+);
+
+
+create table orders(
+orderid varchar2(10) constraint order_id_pk primary key,
+orderdate date,
+cid varchar2(15) constraint ods_cid_fk references customer(cid),
+qty number(3),
+pid varchar2(10) constraint ods_pid_fk references product(pid),
+shpaddress varchar2(10) not null
+);
+
+
+create table customer(
+cid varchar2(10) primary key,
+cname varchar2(15) not null,
+contact varchar2(10) not null
+);
+
+create sequence prod_id_seq
+start with 101
+increment by 2;
+
+create view emp_dept_view
+as
+select e.ename, e.deptno, d.dname, d.loc
+from emp e inner join dept d on
+e.deptno = d.deptno
+order by e.deptno;
+
+create index emp_deptno_idx on emp(deptno);
+
+//Correlated Sub query
+select * from dept d
+where exists (select * from emp
+where deptno = d.deptno);
